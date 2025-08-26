@@ -1,0 +1,13 @@
+# requirements.txt
+
+# Data Handling & ML
+pandas
+scikit-learn
+
+# For API Simulation (if needed later)
+flask
+
+# For Development & Plotting
+notebook
+matplotlib
+seaborn 
