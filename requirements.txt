@@ -11,3 +11,8 @@ flask
 notebook
 matplotlib
 seaborn 
+
+#for db connection
+pymongo
+python-dotenv
+tqdm

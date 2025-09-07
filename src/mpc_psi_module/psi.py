@@ -13,30 +13,31 @@ def hash_id(patient_id, salt):
 #When you pass it 851234567V, str() does nothing, and it hashes the string. When you pass it an integer, str() converts it to a string first. This is a robust design, and you can confidently tell your panel that your PSI protocol was built to handle alphanumeric identifiers from the start.
 
 
-def run_psi(patient_ids_A, patient_ids_B):
+def run_psi(ids_A, ids_B, already_hashed=False):
     """
     Performs a simple salted-hash based Private Set Intersection.
     
     Args:
-        patient_ids_A (list): A list of patient IDs from Hospital A.
-        patient_ids_B (list): A list of patient IDs from Hospital B.
-
-    Returns:
-        list: A list of the original patient IDs that are in the intersection.
+        ids_A (list): A list of patient identifiers from Party A.
+        ids_B (list): A list of patient identifiers from Party B.
+        already_hashed (bool): If True, treats the inputs as already hashed and skips hashing.
     """
-    # Hospital A creates a dictionary mapping its hashed IDs back to the original IDs.
-    hashed_set_A = {hash_id(pid, PSI_SALT): pid for pid in patient_ids_A}
-    
-    # Hospital B does the same.
-    hashed_set_B = {hash_id(pid, PSI_SALT): pid for pid in patient_ids_B}
-
-    # The hospitals would exchange ONLY the hashed keys of these dictionaries.
-    # They find the intersection of the *hashed* sets.
-    intersecting_hashes = set(hashed_set_A.keys()).intersection(set(hashed_set_B.keys()))
-
-    # We can now map the intersecting hashes back to the original IDs.
-    intersecting_ids = sorted([hashed_set_A[h] for h in intersecting_hashes])
-    return intersecting_ids
+    if already_hashed:
+        # If inputs are already hashed, just convert to sets
+        hashed_set_A = set(ids_A)
+        hashed_set_B = set(ids_B)
+        
+        # In this mode, we can only return the common hashes, not the original IDs
+        return sorted(list(hashed_set_A.intersection(hashed_set_B)))
+    else:
+        # If inputs are plaintext, perform the full salted-hash protocol
+        hashed_map_A = {hash_id(pid, PSI_SALT): pid for pid in ids_A}
+        hashed_map_B = {hash_id(pid, PSI_SALT): pid for pid in ids_B}
+        
+        intersecting_hashes = set(hashed_map_A.keys()).intersection(hashed_map_B.keys())
+        
+        # Return the original, plaintext IDs from the intersection
+        return sorted([hashed_map_A[h] for h in intersecting_hashes if h in hashed_map_A])
 
 # This part allows us to run the file directly for testing.
 if __name__ == '__main__':
