@@ -134,11 +134,10 @@ def perform_secure_inference_sync(patient_scaled_features):
 if __name__ == '__main__':
     # Define the sample patient for standalone testing
     feature_columns = [
-        'gender','age','hypertension','heart_disease','smoking_history',
-        'bmi','HbA1c_level','blood_glucose_level'
+        'gender','age','hypertension','heart_disease', 'bmi','HbA1c_level','blood_glucose_level'
     ]
     
-    patient_unscaled = pd.DataFrame([[0,80,0,1,4,25.19,6.6,140]], columns=feature_columns)
+    patient_unscaled = pd.DataFrame([[0,80,0,1,25.19,6.6,140]], columns=feature_columns)
     patient_scaled = scaler.transform(patient_unscaled)[0].astype(float).tolist()
     
     # Use synchronous version for standalone testing

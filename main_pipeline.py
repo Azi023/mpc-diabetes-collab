@@ -47,8 +47,7 @@ if patient_record.empty:
 
 # Define the feature columns that the model expects
 feature_columns = [
-    'gender', 'age', 'hypertension', 'heart_disease', 'smoking_history',
-    'bmi', 'HbA1c_level', 'blood_glucose_level'
+    'gender', 'age', 'hypertension', 'heart_disease', 'bmi', 'HbA1c_level', 'blood_glucose_level'
 ]
 
 # Extract and scale the features

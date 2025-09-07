@@ -10,6 +10,9 @@ def hash_id(patient_id, salt):
     """Hashes a patient ID with a salt using SHA-256."""
     return hashlib.sha256(str(patient_id).encode() + salt.encode()).hexdigest()
 
+#When you pass it 851234567V, str() does nothing, and it hashes the string. When you pass it an integer, str() converts it to a string first. This is a robust design, and you can confidently tell your panel that your PSI protocol was built to handle alphanumeric identifiers from the start.
+
+
 def run_psi(patient_ids_A, patient_ids_B):
     """
     Performs a simple salted-hash based Private Set Intersection.

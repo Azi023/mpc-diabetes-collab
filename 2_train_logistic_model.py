@@ -20,7 +20,7 @@ except FileNotFoundError:
 
 # 2. Define features and target
 feature_columns = [
-    'gender', 'age', 'hypertension', 'heart_disease', 'smoking_history',
+    'gender', 'age', 'hypertension', 'heart_disease',
     'bmi', 'HbA1c_level', 'blood_glucose_level'
 ]
 target_column = 'diabetes'
@@ -38,7 +38,7 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test) # Use the same scaler fitted on the training data
 
 # 5. Train the Logistic Regression model
-model = LogisticRegression(random_state=42, max_iter=1000)
+model = LogisticRegression(random_state=42, max_iter=1000, class_weight="balanced")
 model.fit(X_train_scaled, y_train)
 print("Model trained successfully.")
 
